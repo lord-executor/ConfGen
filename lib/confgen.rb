@@ -2,6 +2,7 @@
 require("highline/import")
 require("yaml")
 require("erb")
+require("fileutils")
 
 class ConfGen
 	def generate()
@@ -14,10 +15,15 @@ class ConfGen
 		say(data)
 
 		if (agree("Continue [y/n]?", true))
-			tpl = ERB.new(File.read(template))
-
-			File.open(destination, 'w') do |f|
-				f.write(tpl.result(binding))
+			b = binding
+			config["templates"].each() do |template|
+				src = ERB.new(template["src"]).result(b)
+				dst = ERB.new(template["dst"]).result(b)
+				tpl = ERB.new(File.read(src))
+				
+				File.open(dst, 'w') do |f|
+					f.write(tpl.result(b))
+				end
 			end
 		end
 	end

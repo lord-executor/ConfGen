@@ -1,6 +1,8 @@
 
-template: template.erb
-destination: generated.php
+templates:
+  -
+    src: template.erb
+    dst: generated.<%= data['env'] %>.php
 variables:
   -
     name: env
