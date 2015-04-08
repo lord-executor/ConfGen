@@ -1,0 +1,6 @@
+#!/usr/bin/env ruby
+
+require("confgen")
+
+g = ConfGen.new()
+g.generate()
