@@ -2,5 +2,5 @@
 
 require("confgen")
 
-g = ConfGen.new()
+g = ConfGen.new(Dir.pwd)
 g.generate()

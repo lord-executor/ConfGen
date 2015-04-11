@@ -1,0 +1,17 @@
+
+templates:
+  -
+    src: template.erb
+    dst: launch.<%= data['env'] %>.rb
+variables:
+  -
+    name: env
+    type: choice
+    question: "Choose the environment you wish to set up"
+    items: [dev, stage, prod]
+    default: stage
+  -
+    name: name
+    type: string
+    question: "What's your name?"
+    default: Waldo
