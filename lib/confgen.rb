@@ -22,11 +22,15 @@ class ConfGen
 		if (agree("Continue [y/n]?", true))
 			b = binding
 			config["templates"].each() do |template|
-				src = ERB.new(@confPath.join(template["src"]).to_path()).result(b)
-				dst = ERB.new(@confPath.join(template["dst"]).to_path()).result(b)
-				tpl = ERB.new(File.read(src))
+				src = Pathname.new(ERB.new(@confPath.join(template["src"]).to_path()).result(b))
+				dst = Pathname.new(ERB.new(@confPath.join(template["dst"]).to_path()).result(b))
+				tpl = ERB.new(File.read(src.to_path()))
 				
-				File.open(dst, 'w') do |f|
+				if (!dst.dirname.directory?)
+					FileUtils.mkdir_p(dst.dirname.to_path())
+				end
+
+				File.open(dst.to_path(), 'w') do |f|
 					f.write(tpl.result(b))
 				end
 			end

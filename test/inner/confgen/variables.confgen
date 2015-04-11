@@ -2,7 +2,7 @@
 templates:
   -
     src: template.erb
-    dst: launch.<%= data['env'] %>.rb
+    dst: ../subdir/somedir/<%= data['env'] %>/launch.rb
 variables:
   -
     name: env
