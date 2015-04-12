@@ -1,0 +1,2 @@
+# Introduction
+confgen is a simple command line utility that helps you generate configuration files from command line user input. It was designed to provide similar functionality to the Symfony2 `parameters.yaml` generation, it can however be used in many different ways. It uses a configuration file that defines a list of variables for which the user will have to enter values, with those variables defined, it then generates files based on ERB templates.
