@@ -1,37 +1,39 @@
 
-require("highline/import")
-require("yaml")
-require("erb")
-require("fileutils")
-require("pathname")
+require('highline/import')
+require('yaml')
+require('erb')
+require('fileutils')
+require('pathname')
+require('pp')
 
 class ConfGen
 	def initialize(path)
 		@path = path
 	end
 
-	def generate()
+	def generate(sets)
 		config = locate()
-		template = config['template']
-		destination = config['destination']
-		data = gather(config)
+		sets.each() do |setName|
+			configSet = config[setName]
+			data = gather(configSet)
 
-		say("Generation will continue with the following data")
-		say(data)
+			say('Generation will continue with the following data')
+			print(configSet, data)
 
-		if (agree("Continue [y/n]?", true))
-			b = binding
-			config["templates"].each() do |template|
-				src = Pathname.new(ERB.new(@confPath.join(template["src"]).to_path()).result(b))
-				dst = Pathname.new(ERB.new(@confPath.join(template["dst"]).to_path()).result(b))
-				tpl = ERB.new(File.read(src.to_path()))
-				
-				if (!dst.dirname.directory?)
-					FileUtils.mkdir_p(dst.dirname.to_path())
-				end
+			if (agree('Continue [y/n]?', true))
+				b = binding
+				configSet['templates'].each() do |template|
+					src = Pathname.new(ERB.new(@confPath.join(template['src']).to_path()).result(b))
+					dst = Pathname.new(ERB.new(@confPath.join(template['dst']).to_path()).result(b))
+					tpl = ERB.new(File.read(src.to_path()))
+					
+					if (!dst.dirname.directory?)
+						FileUtils.mkdir_p(dst.dirname.to_path())
+					end
 
-				File.open(dst.to_path(), 'w') do |f|
-					f.write(tpl.result(b))
+					File.open(dst.to_path(), 'w') do |f|
+						f.write(tpl.result(b))
+					end
 				end
 			end
 		end
@@ -52,14 +54,24 @@ class ConfGen
 		end
 	end
 
-	def gather(config)
+	def gather(configSet)
 		data = Hash.new()
 
-		config['variables'].each do |var|
+		configSet['variables'].each do |var|
 			data[var['name']] = self.send(var['type'], var)
 		end
 
 		return data
+	end
+
+	def print(configSet, data)
+		configSet['variables'].each do |var|
+			if (var['type'] == 'password')
+				say("  #{var['name']}: ****")
+			else
+				say("  #{var['name']}: #{data[var['name']]}")
+			end
+		end
 	end
 
 	def choice(var)

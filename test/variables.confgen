@@ -1,21 +1,22 @@
 
-templates:
-  -
-    src: template.erb
-    dst: generated.<%= data['env'] %>.php
-variables:
-  -
-    name: env
-    type: choice
-    question: "Choose the environment you wish to set up"
-    items: [dev, stage, prod]
-    default: stage
-  -
-    name: dbuser
-    type: string
-    question: "Username of your DB user"
-    default: root
-  -
-    name: dbpassword
-    type: password
-    question: "Password for DB user"
+default:
+  templates:
+    -
+      src: template.erb
+      dst: generated.<%= data['env'] %>.php
+  variables:
+    -
+      name: env
+      type: choice
+      question: "Choose the environment you wish to set up"
+      items: [dev, stage, prod]
+      default: stage
+    -
+      name: dbuser
+      type: string
+      question: "Username of your DB user"
+      default: root
+    -
+      name: dbpassword
+      type: password
+      question: "Password for DB user"

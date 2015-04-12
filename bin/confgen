@@ -2,5 +2,10 @@
 
 require("confgen")
 
+sets = ARGV
+if (sets.length === 0)
+	sets << "default"
+end
+
 g = ConfGen.new(Dir.pwd)
-g.generate()
+g.generate(sets)

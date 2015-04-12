@@ -1,17 +1,37 @@
 
-templates:
-  -
-    src: template.erb
-    dst: ../subdir/somedir/<%= data['env'] %>/launch.rb
-variables:
-  -
-    name: env
-    type: choice
-    question: "Choose the environment you wish to set up"
-    items: [dev, stage, prod]
-    default: stage
-  -
-    name: name
-    type: string
-    question: "What's your name?"
-    default: Waldo
+default:
+  templates:
+    -
+      src: template.erb
+      dst: ../subdir/somedir/<%= data['env'] %>/launch.rb
+  variables:
+    -
+      name: env
+      type: choice
+      question: "Choose the environment you wish to set up"
+      items: [dev, stage, prod]
+      default: stage
+    -
+      name: name
+      type: string
+      question: "What's your name?"
+      default: Waldo
+custom:
+  templates:
+    -
+      src: template.erb
+      dst: ../subdir/<%= data['dir'] %>/launch.rb
+    -
+      src: template.erb
+      dst: ../subdir/<%= data['dir'] %>/launch2.rb
+  variables:
+    -
+      name: dir
+      type: string
+      question: "enter a directory name"
+      default: stage
+    -
+      name: name
+      type: choice
+      question: "Pick your favorite"
+      items: ["Star Trek", "Star Wars", "Firefly"]
